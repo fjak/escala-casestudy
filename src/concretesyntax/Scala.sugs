@@ -8,6 +8,8 @@ import concretesyntax.MetaExplode
 sugar Scala {
 	context-free syntax
 		"|[" ScalaTemplateStat "]|" -> StrategoTerm {cons("ToMetaExpr")}
+		":${" StrategoTerm "}" -> ScalaExpr            {cons("FromMetaExpr")}
+		":${" StrategoTerm "}" -> ScalaNoLExpr         {cons("FromMetaExpr")}
 		":${" StrategoTerm "}" -> ScalaTemplateStat    {cons("FromMetaExpr")}
 		":${" StrategoTerm "}" -> ScalaId              {cons("FromMetaExpr")}
 		":${" StrategoTerm "}" -> ScalaTypeParamClause {cons("FromMetaExpr")}

@@ -5,12 +5,18 @@ import concretesyntax.Scala
 sugar Sugar {
 	context-free syntax
 		"imperative" "evt" ScalaId ScalaTypeParamClause -> ScalaTemplateStat {cons("ImperativeEvt")}
+		"evt" ScalaId "=" ScalaExpr                     -> ScalaTemplateStat {cons("Evt")}
+		"evt"        -> ScalaPlainId {reject}
 		"imperative" -> ScalaPlainId {reject}
 
 	desugarings
 		desugar-imperative-evt
+		desugar-evt
 
 	rules
 		desugar-imperative-evt:
-			ImperativeEvt(name, type) -> |[ lazy val :${name} = new events.lib.ImperativeEvent :${type} ]|
+			ImperativeEvt(name, type) -> |[ lazy val :${name} = new scala.events.ImperativeEvent :${type} ]|
+
+		desugar-evt:
+			Evt(name, expr) -> |[ lazy val :${name} = :${expr} ]|
 }

@@ -1,0 +1,16 @@
+package escala
+
+import concretesyntax.Scala
+
+sugar Sugar {
+	context-free syntax
+		"imperative" "evt" ScalaId ScalaTypeParamClause -> ScalaTemplateStat {cons("ImperativeEvt")}
+		"imperative" -> ScalaPlainId {reject}
+
+	desugarings
+		desugar-imperative-evt
+
+	rules
+		desugar-imperative-evt:
+			ImperativeEvt(name, type) -> |[ lazy val :${name} = new events.lib.ImperativeEvent :${type} ]|
+}

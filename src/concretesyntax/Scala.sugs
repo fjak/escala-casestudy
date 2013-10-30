@@ -1,0 +1,14 @@
+package concretesyntax
+
+import org.sugarj.languages.Scala
+import org.sugarj.languages.Stratego
+
+import concretesyntax.MetaExplode
+
+sugar Scala {
+	context-free syntax
+		"|[" ScalaTemplateStat "]|" -> StrategoTerm {cons("ToMetaExpr")}
+		":${" StrategoTerm "}" -> ScalaTemplateStat    {cons("FromMetaExpr")}
+		":${" StrategoTerm "}" -> ScalaId              {cons("FromMetaExpr")}
+		":${" StrategoTerm "}" -> ScalaTypeParamClause {cons("FromMetaExpr")}
+}

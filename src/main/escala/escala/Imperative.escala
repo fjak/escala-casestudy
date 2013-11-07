@@ -1,23 +1,23 @@
 package escala
 
 object Imperative {
-	// declare two imperative events
-	imperative evt evt1[Unit]
-	imperative evt evt2[Unit]
+  // declare two imperative events
+  imperative evt evt1[Unit]
+  imperative evt evt2[Unit]
 
-	// declare a declarative event, depending on evt1 and evt2
-	evt changed = evt1 || evt2
+  // declare a declarative event, depending on evt1 and evt2
+  evt changed = evt1 || evt2
 
-	// method to call on reaction
-	// type checker will complain if the argument is left out, as the implicits
-	// from the escala Predef are not imported, yet
-	def react { println("Something changed") }
+  // method to call on reaction
+  // type checker will complain if the argument is left out, as the implicits
+  // from the escala Predef are not imported, yet
+  def react { println("Something changed") }
 
-	def main(args: Array[String]) {
-		// register the react method
-		changed += react _
+  def main(args: Array[String]) {
+    // register the react method
+    changed += react _
 
-		// trigger evt2, which should also trigger the changed event
-		evt2()
-	}
+    // trigger evt2, which should also trigger the changed event
+    evt2()
+  }
 }

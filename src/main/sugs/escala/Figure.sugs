@@ -1,0 +1,19 @@
+package escala
+
+import escala.Sugar
+
+class Figure {
+	// declare event on observable method
+	evt moved = afterExec(moveBy)
+
+	// define observable method
+	observable def moveBy(d: (Int, Int)) {
+	  // moving...
+	}
+
+	// method to call on moved event
+	def afterMoved(d: (Int, Int), u: Unit) = println("Moving...")
+
+	// register method with moved event
+	moved += afterMoved _
+}

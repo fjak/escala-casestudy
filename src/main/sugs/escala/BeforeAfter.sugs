@@ -1,0 +1,10 @@
+package escala
+
+import escala.Sugar
+
+object BeforeAfter {
+	def main(args: Array[String]) {
+		val fig = new Figure
+		fig.moveBy((2, 8))
+	}
+}

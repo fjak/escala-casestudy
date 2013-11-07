@@ -4,19 +4,58 @@ import concretesyntax.Scala
 
 sugar Sugar {
 	context-free syntax
-		"imperative" "evt" ScalaId ScalaTypeParamClause -> ScalaTemplateStat {cons("ImperativeEvt")}
-		"evt" ScalaId "=" ScalaExpr                     -> ScalaTemplateStat {cons("Evt")}
+		"imperative" "evt" ScalaId ScalaTypeParamClause
+			-> ScalaTemplateStat {cons("ImperativeEvt")}
+
+		"evt" ScalaId ScalaTypeParamClause? "=" ScalaExpr
+			-> ScalaTemplateStat {cons("Evt")}
+
+		"observable" "def" ScalaFunDef
+			-> ScalaTemplateStat {cons("ObservableDef")}
+
+		"afterExec"  "(" ScalaId ")" -> ScalaExpr {cons("AfterExec")}
+		"beforeExec" "(" ScalaId ")" -> ScalaExpr {cons("BeforeExec")}
+
+		"afterExec"  -> ScalaPlainId {reject}
+		"beforeExec" -> ScalaPlainId {reject}
+		"observable" -> ScalaPlainId {reject}
 		"evt"        -> ScalaPlainId {reject}
 		"imperative" -> ScalaPlainId {reject}
 
 	desugarings
+		desugar-after-exec
 		desugar-imperative-evt
 		desugar-evt
+		desugar-observable-def
 
 	rules
+		desugar-after-exec:
+			AfterExec(name) -> DesignatorExpr(name, Id("after"))
+
 		desugar-imperative-evt:
 			ImperativeEvt(name, type) -> |[ lazy val :${name} = new scala.events.ImperativeEvent :${type} ]|
 
 		desugar-evt:
-			Evt(name, expr) -> |[ lazy val :${name} = :${expr} ]|
+			Evt(name, type, expr) -> |[ lazy val :${name} = :${expr} ]|
+
+		/* TODO: adapt to functions
+		   TODO: avoid nested lists */
+		desugar-observable-def:
+			TemplateStatSemi(
+				ObservableDef(
+					ProcDef(
+						FunSig(Id(name), typeParamClause, paramClause),
+						blk)),
+				semi)
+			->
+			[TemplateStatSemi(
+				FunDefDef(
+					ProcDef(
+						FunSig(
+							Id(<strcat>("_", name)),
+							typeParamClause,
+							paramClause),
+						blk)),
+				semi)
+			,TemplateStatSemi(|[ lazy val :${name} = scala.events.Observable(:${<strcat>("_", name)})]|, semi)]
 }

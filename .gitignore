@@ -5,3 +5,4 @@ lib/
 *.aterm
 *.desug
 escala-bin/
+target/

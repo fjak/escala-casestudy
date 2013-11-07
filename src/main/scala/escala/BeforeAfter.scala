@@ -1,0 +1,8 @@
+package escala
+
+object BeforeAfter {
+  def main(args: Array[String]) {
+    val fig = new Figure
+    fig.moveBy((2, 8))
+  }
+}

@@ -2,7 +2,7 @@ package escala
 
 import escala.Sugar
 
-object Test {
+object Imperative {
 	// declare two imperative events
 	imperative evt evt1[Unit]
 	imperative evt evt2[Unit]
@@ -18,9 +18,6 @@ object Test {
 	def main(args: Array[String]) {
 		// register the react method
 		changed += react _
-
-		// give the current time, to check if compilation succeeded
-		println("2013-11-05 10:27:12")
 
 		// trigger evt2, which should also trigger the changed event
 		evt2()

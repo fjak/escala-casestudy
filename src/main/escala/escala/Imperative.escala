@@ -9,8 +9,6 @@ object Imperative {
   evt changed = evt1 || evt2
 
   // method to call on reaction
-  // type checker will complain if the argument is left out, as the implicits
-  // from the escala Predef are not imported, yet
   def react { println("Something changed") }
 
   def main(args: Array[String]) {

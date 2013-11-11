@@ -23,12 +23,32 @@ sugar Sugar {
 		"imperative" -> ScalaPlainId {reject}
 
 	desugarings
-		desugar-after-exec
-		desugar-imperative-evt
-		desugar-evt
-		desugar-observable-def
+		desugar-escala
 
 	rules
+		desugar-escala =
+			desugar-escala-implicits-import
+			; innermost(desugar-escala-nodes)
+
+		desugar-escala-implicits-import:
+			TemplateBody([|body]) -> TemplateBody([import|body])
+			where import := |[ import scala.events.EventsLibConversions._ ]|
+				; <not(elem)> (import, body)
+				; <uses-escala> body
+
+		uses-escala =
+			oncetd(
+				?AfterExec(_)
+				+ ?ImperativeEvt(_, _)
+				+ ?Evt(_, _, _)
+				+ ?ObservableDef(_))
+
+		desugar-escala-nodes =
+			desugar-after-exec
+			<+ desugar-imperative-evt
+			<+ desugar-evt
+			<+ desugar-observable-def
+
 		desugar-after-exec:
 			AfterExec(name) -> DesignatorExpr(name, Id("after"))
 

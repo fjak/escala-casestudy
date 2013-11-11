@@ -5,12 +5,12 @@ class Figure {
   evt moved = afterExec(moveBy)
 
   // define observable method
-  def moveBy(d: (Int, Int)) {
+  def moveBy(dx: Int, dy: Int) {
     // moving...
   }
 
   // method to call on moved event
-  def afterMoved(d: (Int, Int), u: Unit) = println("Moving...")
+  def afterMoved(args: (Int, Int), ret: Unit) = println("Moving...")
 
   // register method with moved event
   moved += afterMoved _

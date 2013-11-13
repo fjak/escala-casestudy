@@ -58,9 +58,13 @@ sugar Sugar {
 		desugar-evt:
 			Evt(name, type, expr) -> |[ lazy val :${name} = :${expr} ]|
 
-		/* TODO: adapt to functions
-		   TODO: avoid nested lists */
+		/* TODO: desugaring for functions */
 		desugar-observable-def:
+			[obs_def|rst] -> <flatten-list> <map(desugar-observable-def-proc <+ id)> [obs_def|rst]
+			where
+				<oncetd(?ObservableDef(_))> [obs_def|rst]
+
+		desugar-observable-def-proc:
 			TemplateStatSemi(
 				ObservableDef(
 					ProcDef(
@@ -77,5 +81,5 @@ sugar Sugar {
 							paramClause),
 						blk)),
 				semi)
-			,TemplateStatSemi(|[ lazy val :${name} = scala.events.Observable(:${<strcat>("_", name)})]|, semi)]
+			,TemplateStatSemi(|[ lazy val :${name} = scala.events.Observable(:${<strcat>("_", name)}) ]|, semi)]
 }

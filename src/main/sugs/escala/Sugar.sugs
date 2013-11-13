@@ -32,7 +32,7 @@ sugar Sugar {
 
 		desugar-escala-implicits-import:
 			TemplateBody([|body]) -> TemplateBody([import|body])
-			where import := |[ import scala.events.EventsLibConversions._ ]|
+			where import := |[ import scala.events.EventsLibConversions._; ]|
 				; <not(elem)> (import, body)
 				; <uses-escala> body
 

@@ -82,4 +82,25 @@ sugar Sugar {
 						blk)),
 				semi)
 			,TemplateStatSemi(|[ lazy val :${name} = scala.events.Observable(:${<strcat>("_", name)}) ]|, semi)]
+
+		desugar-observable-def-proc:
+			TemplateStatSemi(
+				ObservableDef(
+					FunDef(
+						FunSig(Id(name), typeParamClause, paramClause),
+						typed,
+						expr)),
+				semi)
+			->
+			[TemplateStatSemi(
+				FunDefDef(
+					FunDef(
+						FunSig(
+							Id(<strcat>("_", name)),
+							typeParamClause,
+							paramClause),
+						typed,
+						expr)),
+				semi)
+			,TemplateStatSemi(|[ lazy val :${name} = scala.events.Observable(:${<strcat>("_", name)}) ]|, semi)]
 }

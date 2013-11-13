@@ -7,7 +7,7 @@ class Figure {
 	evt moved = afterExec(moveBy)
 
 	// define observable method
-	observable def moveBy(dx: Int, dy: Int) {
+	observable def moveBy(dx: Int, dy: Int) = {
 	  // moving...
 	}
 

@@ -39,12 +39,14 @@ sugar Sugar {
 		uses-escala =
 			oncetd(
 				?AfterExec(_)
+				+ ?BeforeExec(_)
 				+ ?ImperativeEvt(_, _)
 				+ ?Evt(_, _, _)
 				+ ?ObservableDef(_))
 
 		desugar-escala-nodes =
 			desugar-after-exec
+			<+ desugar-before-exec
 			<+ desugar-imperative-evt
 			<+ desugar-evt
 			<+ desugar-observable-def
@@ -52,13 +54,15 @@ sugar Sugar {
 		desugar-after-exec:
 			AfterExec(name) -> DesignatorExpr(name, Id("after"))
 
+		desugar-before-exec:
+			BeforeExec(name) -> DesignatorExpr(name, Id("before"))
+
 		desugar-imperative-evt:
 			ImperativeEvt(name, type) -> |[ lazy val :${name} = new scala.events.ImperativeEvent :${type} ]|
 
 		desugar-evt:
 			Evt(name, type, expr) -> |[ lazy val :${name} = :${expr} ]|
 
-		/* TODO: desugaring for functions */
 		desugar-observable-def:
 			[obs_def|rst] -> <flatten-list> <map(desugar-observable-def-proc <+ id)> [obs_def|rst]
 			where

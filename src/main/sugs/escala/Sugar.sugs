@@ -80,12 +80,12 @@ sugar Sugar {
 				FunDefDef(
 					ProcDef(
 						FunSig(
-							Id(<strcat>("_", name)),
+							Id(<escala-virt> name),
 							typeParamClause,
 							paramClause),
 						blk)),
 				semi)
-			,TemplateStatSemi(|[ lazy val :${name} = scala.events.Observable(:${<strcat>("_", name)}) ]|, semi)]
+			,TemplateStatSemi(|[ lazy val :${name} = scala.events.Observable(:${<escala-virt> name}) ]|, semi)]
 
 		desugar-observable-def-proc:
 			TemplateStatSemi(
@@ -100,11 +100,13 @@ sugar Sugar {
 				FunDefDef(
 					FunDef(
 						FunSig(
-							Id(<strcat>("_", name)),
+							Id(<escala-virt> name),
 							typeParamClause,
 							paramClause),
 						typed,
 						expr)),
 				semi)
-			,TemplateStatSemi(|[ lazy val :${name} = scala.events.Observable(:${<strcat>("_", name)}) ]|, semi)]
+			,TemplateStatSemi(|[ lazy val :${name} = scala.events.Observable(:${<escala-virt> name}) ]|, semi)]
+
+		escala-virt = ?name; <strcat>("$escala_virt$", name)
 }

@@ -16,11 +16,12 @@ sugar Sugar {
 		"afterExec"  "(" ScalaId ")" -> ScalaExpr {cons("AfterExec")}
 		"beforeExec" "(" ScalaId ")" -> ScalaExpr {cons("BeforeExec")}
 
-		"afterExec"  -> ScalaPlainId {reject}
-		"beforeExec" -> ScalaPlainId {reject}
-		"observable" -> ScalaPlainId {reject}
-		"evt"        -> ScalaPlainId {reject}
-		"imperative" -> ScalaPlainId {reject}
+	lexical syntax
+		"afterExec"  -> SCALA-KEYWORD
+		"beforeExec" -> SCALA-KEYWORD
+		"observable" -> SCALA-KEYWORD
+		"evt"        -> SCALA-KEYWORD
+		"imperative" -> SCALA-KEYWORD
 
 	desugarings
 		desugar-escala
